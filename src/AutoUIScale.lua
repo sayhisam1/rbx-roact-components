@@ -1,5 +1,5 @@
 local GuiService = game:GetService("GuiService")
-local Roact = require(script.Parent.Roact)
+local Roact = require(script.Parent.Parent.Roact)
 local AutoUIScale = Roact.Component:extend("UIScaledScreenGui")
 
 function AutoUIScale:init()
