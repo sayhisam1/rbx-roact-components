@@ -1,0 +1,14 @@
+[package]
+name = "sayhisam1/rbx-roact-components"
+description = "Some useful components for Roblox Roact"
+version = "1.0.0"
+license = "MIT"
+authors = ["sayhisam1 <sayhisam1@gmail.com>"]
+realm = "shared"
+registry = "https://github.com/upliftgames/wally-index"
+
+[dependencies]
+Roact = "roblox/roact@1.4.2"
+Hooks = "kampfkarren/roact-hooks@0.3.0"
+RoactFlipper = "reselim/roact-flipper@1.1.0"
+Flipper = "reselim/flipper@2.0.0"
