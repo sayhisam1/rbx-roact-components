@@ -8,19 +8,19 @@ function AutoUIScale:init()
 end
 
 AutoUIScale.defaultProps = {
-	minAxisSize = 320; 		-- minimum supported resolution (on small axis)
-	maxAxisSize = 1080;		-- max supported resolution (on small axis)
-	minScaleRatio = .3;		-- min scale ratio
-	maxScaleRatio = 1;		-- max scale ratio
+	minAxisSize = 320, -- minimum supported resolution (on small axis)
+	maxAxisSize = 1080, -- max supported resolution (on small axis)
+	minScaleRatio = 0.3, -- min scale ratio
+	maxScaleRatio = 1, -- max scale ratio
 }
 
 function AutoUIScale:render()
 	return Roact.createElement("UIScale", {
-		Scale = self.scaleBinding;
-		[Roact.Ref] = self.ref;
+		Scale = self.scaleBinding,
+		[Roact.Ref] = self.ref,
 		[Roact.Event.AncestryChanged] = function()
 			self:updateScale()
-		end;
+		end,
 	})
 end
 
@@ -32,8 +32,9 @@ function AutoUIScale:calculateRatio(minAxis, ignoreGuiInset)
 	end
 	local maxAxisSize = self.props.maxAxisSize
 	local delta = maxAxisSize - minAxisSize
-	local ratio = (minAxis - minAxisSize)/delta * (self.props.maxScaleRatio - self.props.minScaleRatio) + self.props.minScaleRatio
-	return math.clamp(ratio, .3, 1)
+	local ratio = (minAxis - minAxisSize) / delta * (self.props.maxScaleRatio - self.props.minScaleRatio)
+		+ self.props.minScaleRatio
+	return math.clamp(ratio, 0.3, 1)
 end
 
 function AutoUIScale:clearListener()
@@ -47,14 +48,17 @@ function AutoUIScale:updateScale()
 	self:clearListener()
 	local ref = self.ref:getValue()
 	if ref then
-		local viewport = ref:FindFirstAncestorWhichIsA("ScreenGui") or ref:FindFirstAncestorWhichIsA("DockWidgetPluginGui")
+		local viewport = ref:FindFirstAncestorWhichIsA("ScreenGui")
+			or ref:FindFirstAncestorWhichIsA("DockWidgetPluginGui")
 		if viewport then
 			local absX = viewport.AbsoluteSize.X
 			local absY = viewport.AbsoluteSize.Y
 			local ignoredGuiInset = (not viewport:IsA("DockWidgetPluginGui") and viewport.IgnoreGuiInset)
 			self.updateScaleBinding(self:calculateRatio(math.min(absX, absY), ignoredGuiInset))
 			self.viewportChangedListener = viewport:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-				self.updateScaleBinding(self:calculateRatio(math.min(viewport.AbsoluteSize.X, viewport.AbsoluteSize.Y), ignoredGuiInset))
+				self.updateScaleBinding(
+					self:calculateRatio(math.min(viewport.AbsoluteSize.X, viewport.AbsoluteSize.Y), ignoredGuiInset)
+				)
 			end)
 		end
 	end
